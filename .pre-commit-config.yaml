@@ -11,6 +11,8 @@ repos:
     rev: 'v1.13.0'
     hooks:
       - id: mypy
+        additional_dependencies: []
+        exclude: '^(\.venv|venv|.*site-packages.*)'
 
 # Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit

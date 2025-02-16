@@ -8,7 +8,9 @@ dependencies = [
     "aio-pika>=9.5.4",
     "aiohttp>=3.11.12",
     "aiomysql>=0.2.0",
+    "alembic>=1.14.1",
     "black>=25.1.0",
+    "cryptography>=44.0.1",
     "fastapi>=0.115.8",
     "loguru>=0.7.3",
     "mypy>=1.15.0",
@@ -23,6 +25,15 @@ dependencies = [
     "sqlalchemy-utils>=0.41.2",
     "uvicorn>=0.34.0",
 ]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["migrations", "tests"]
+
 
 [tool.ruff]
 line-length = 119

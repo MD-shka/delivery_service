@@ -1,8 +1,9 @@
 from datetime import datetime
 
-from base import Base
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from new.models.base import Base
 
 
 class Parcel(Base):

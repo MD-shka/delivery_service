@@ -7,10 +7,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.core.config import rabbitmq_settings
-from app.models.parcel import Parcel, ParcelType
-from app.schemes.parcels import ParacelDetial, ParcelCreate
-from app.services.queue import get_connection_and_channel
+from new.core.config import rabbitmq_settings
+from new.models.parcel import Parcel, ParcelType
+from new.schemes.parcels import ParacelDetial, ParcelCreate
+from new.services.queue import get_connection_and_channel
 
 RABBITMQ_URL = rabbitmq_settings.RABBITMQ_URL
 QUEUE_NAME = rabbitmq_settings.QUEUE_NAME

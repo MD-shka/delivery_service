@@ -4,7 +4,7 @@ from typing import AsyncGenerator
 from fastapi import Cookie
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.db import get_session as _get_db_session
+from new.services.db import get_session as _get_db_session
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:

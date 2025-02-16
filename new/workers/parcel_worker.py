@@ -3,12 +3,12 @@ import json
 
 from loguru import logger
 
-from app.core.config import rabbitmq_settings
-from app.models.parcel import Parcel
-from app.services.currency_service import get_usd_to_rub_rate
-from app.services.db import get_session
-from app.services.delivery_calculator import calculate_delivery_cost
-from app.services.queue import get_connection_and_channel
+from new.core.config import rabbitmq_settings
+from new.models.parcel import Parcel
+from new.services.currency_service import get_usd_to_rub_rate
+from new.services.db import get_session
+from new.services.delivery_calculator import calculate_delivery_cost
+from new.services.queue import get_connection_and_channel
 
 RABBITMQ_URL = rabbitmq_settings.RABBITMQ_URL
 QUEUE_NAME = rabbitmq_settings.QUEUE_NAME

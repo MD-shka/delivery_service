@@ -3,8 +3,10 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-COPY . .
+COPY src .
 
-RUN pip install uv && uv venv .venv && /bin/bash -c "source .venv/bin/activate && uv pip install fastapi uvicorn pydantic[dotenv] sqlalchemy aiomysql redis pymongo aio_pika requests pytest"
+RUN pip install uv \
+    && uv venv .venv \
+    && /bin/bash -c "source .venv/bin/activate && uv pip install ."
 
 CMD ["/app/.venv/bin/python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

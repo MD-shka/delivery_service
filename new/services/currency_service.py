@@ -2,7 +2,7 @@ import aiohttp
 import redis.asyncio as redis
 from loguru import logger
 
-from app.core.config import redis_settings
+from new.core.config import redis_settings
 
 CACHE_KEY = "usd_to_rub_rate"
 CACHE_TTL = 3600

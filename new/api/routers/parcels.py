@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dependencies import get_db, get_session_id
-from app.schemes.parcels import ParcelCreate
-from app.services.parcel_service import (
+from new.dependencies import get_db, get_session_id
+from new.schemes.parcels import ParcelCreate
+from new.services.parcel_service import (
     get_parcel_detail_service,
     get_parcel_types_service,
     get_parcels_service,
