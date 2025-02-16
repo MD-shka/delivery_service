@@ -1,28 +1,32 @@
+# mypy: disable-error-code=call-arg
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ENV_PATH = "/projects/delivery_service/.env"
 
+
 class DBSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ENV_PATH, env_file_encoding="utf-8")
 
-    MYSQL_ROOT_PASSWORD: str = model_config.get("MYSQL_ROOT_PASSWORD")
-    MYSQL_USER: str = model_config.get("MYSQL_USER")
-    MYSQL_PASSWORD: str = model_config.get("MYSQL_PASSWORD")
-    MYSQL_DATABASE: str = model_config.get("MYSQL_DATABASE")
-    DATABASE_URL: str = model_config.get("DATABASE_URL")
+    MYSQL_ROOT_PASSWORD: str
+    MYSQL_USER: str
+    MYSQL_PASSWORD: str
+    MYSQL_DATABASE: str
+    DATABASE_URL: str
 
 
 class RabbitSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ENV_PATH, env_file_encoding="utf-8")
 
-    RABBITMQ_URL: str = model_config.get("RABBITMQ_URL")
+    RABBITMQ_URL: str
+    QUEUE_NAME: str
 
 
 class RedisSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ENV_PATH, env_file_encoding="utf-8")
 
-    REDIS_HOST: str = model_config.get("REDIS_HOST")
-    REDIS_PORT: int = model_config.get("REDIS_PORT")
+    REDIS_HOST: str
+    REDIS_PORT: int
 
 
 db_settings = DBSettings()

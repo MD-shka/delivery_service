@@ -1,15 +1,19 @@
 import aiohttp
 import redis.asyncio as redis
 from loguru import logger
+
 from app.core.config import redis_settings
 
 CACHE_KEY = "usd_to_rub_rate"
 CACHE_TTL = 3600
 CBR_URL = "https://www.cbr-xml-daily.ru/daily_json.js"
+REDIS_HOST = redis_settings.REDIS_HOST
+REDIS_PORT = redis_settings.REDIS_PORT
+
 
 async def get_usd_to_rub_rate() -> float:
     try:
-        r = redis.Redis(host=redis_settings.REDIS_HOST, port=redis_settings.REDIS_PORT, decode_responses=True)
+        r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
         cached_rate = await r.get(CACHE_KEY)
         if cached_rate:
             logger.info(f"Using cached USD to RUB rate: {cached_rate}")

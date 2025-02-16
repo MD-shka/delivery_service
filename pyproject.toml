@@ -21,7 +21,6 @@ dependencies = [
     "requests>=2.32.3",
     "sqlalchemy>=2.0.38",
     "sqlalchemy-utils>=0.41.2",
-    "types-redis>=4.6.0.20241004",
     "uvicorn>=0.34.0",
 ]
 
@@ -37,13 +36,3 @@ line-length = 119
 [tool.bandit]
 exclude_dirs = ["tests", "test"]
 skips = ["B101", "B104", "B105", "B106", "B107", "B108", "B110", "B112"]
-
-[tool.mypy]
-ignore_missing_imports = true
-follow_imports = "silent"
-strict_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-disallow_any_generics = true
-check_untyped_defs = true
-no_implicit_reexport = true

@@ -1,25 +1,24 @@
-import json
 import asyncio
+import json
+
 from loguru import logger
+
 from app.core.config import rabbitmq_settings
 from app.models.parcel import Parcel
-from app.services.db import get_session
-from app.services.queue import get_connection_and_channel
-from app.services.delivery_calculator import calculate_delivery_cost
 from app.services.currency_service import get_usd_to_rub_rate
-
+from app.services.db import get_session
+from app.services.delivery_calculator import calculate_delivery_cost
+from app.services.queue import get_connection_and_channel
 
 RABBITMQ_URL = rabbitmq_settings.RABBITMQ_URL
-QUEUE_NAME = "parcel_registration"
+QUEUE_NAME = rabbitmq_settings.QUEUE_NAME
 
 
-async def process_parcel(parcel_data: dict):
+async def process_parcel(parcel_data: dict[str, float]):
     try:
         usd_to_rub_rate = await get_usd_to_rub_rate()
         delivery_cost = await calculate_delivery_cost(
-            weight=parcel_data["weight"],
-            item_value_usd=parcel_data["item_value"],
-            usd_to_rub_rate=usd_to_rub_rate
+            weight=parcel_data["weight"], item_value_usd=parcel_data["item_value"], usd_to_rub_rate=usd_to_rub_rate
         )
 
         async with get_session() as session:
@@ -28,7 +27,7 @@ async def process_parcel(parcel_data: dict):
                 weight=parcel_data["weight"],
                 type_id=parcel_data["parcel_type_id"],
                 content_value_usd=parcel_data["item_value"],
-                delivery_cost_rub=delivery_cost
+                delivery_cost_rub=delivery_cost,
             )
             session.add(new_parcel)
             await session.commit()
@@ -45,7 +44,7 @@ async def handle_message(message):
 
 
 async def consume_from_queue():
-    rabbitmq_url = rabbitmq_settings.RABBITMQ_URL
+    rabbitmq_url = RABBITMQ_URL
     connection, channel = await get_connection_and_channel(rabbitmq_url, QUEUE_NAME)
 
     async with connection:
