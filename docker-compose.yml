@@ -26,7 +26,8 @@ services:
       - "27017:27017"
 
   app:
-    build: src
+    build:
+        context: .
     depends_on:
       - mysql
       - rabbitmq
@@ -34,5 +35,7 @@ services:
       - mongodb
     ports:
       - "8000:8000"
+    env_file:
+      - "/home/mdshka_wsl/projects/delivery_service/.env"
     environment:
       DATABASE_URL: ${DATABASE_URL}

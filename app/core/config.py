@@ -1,8 +1,10 @@
 # mypy: disable-error-code=call-arg
 
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-ENV_PATH = ".env"
+ENV_PATH = Path("/home/mdshka_wsl/projects/delivery_service/.env")
 
 
 class DBSettings(BaseSettings):
@@ -33,7 +35,3 @@ class RedisSettings(BaseSettings):
 db_settings = DBSettings()
 rabbitmq_settings = RabbitSettings()
 redis_settings = RedisSettings()
-
-print(db_settings)
-print(rabbitmq_settings)
-print(redis_settings)

@@ -3,7 +3,7 @@ from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from new.core.config import db_settings
+from app.core.config import db_settings
 
 DATABASE_URL = db_settings.DATABASE_URL
 

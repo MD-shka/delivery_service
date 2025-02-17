@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from new.dependencies import get_db, get_session_id
-from new.schemes.parcels import ParcelCreate
-from new.services.parcel_service import (
+from app.dependencies import get_db, get_session_id
+from app.schemes.parcels import ParcelCreate
+from app.services.parcel_service import (
     get_parcel_detail_service,
     get_parcel_types_service,
     get_parcels_service,
@@ -20,7 +20,7 @@ async def register_parcel(
     response: Response,
     session_id: str = Depends(get_session_id),
 ):
-    """Register a new parcel, return temp_id available in current session"""
+    """Register a app parcel, return temp_id available in current session"""
     response.set_cookie(key="session_id", value=session_id)
     temp_id = await register_parcel_service(parcel, session_id)
     logger.info(f"Registering parcel, temp_id: {temp_id}")

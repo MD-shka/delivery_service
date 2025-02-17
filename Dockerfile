@@ -3,7 +3,7 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-COPY src .
+COPY . .
 
 RUN pip install uv \
     && uv venv .venv \

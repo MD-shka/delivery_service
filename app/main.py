@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from loguru import logger
 
-from new.api.routers.parcels import router
+from app.api.routers.parcels import router
 
 app = FastAPI()
 
