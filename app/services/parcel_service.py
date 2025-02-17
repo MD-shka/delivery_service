@@ -9,7 +9,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.config import rabbitmq_settings
 from app.models.parcel import Parcel, ParcelType
-from app.schemes.parcels import ParacelDetial, ParcelCreate
+from app.schemes.parcels import ParcelCreate, ParcelDetial
 from app.services.queue import get_connection_and_channel
 
 RABBITMQ_URL = rabbitmq_settings.RABBITMQ_URL
@@ -29,9 +29,10 @@ async def register_parcel_service(parcel_data: ParcelCreate, session_id: str) ->
     }
     connection, channel = await get_connection_and_channel(RABBITMQ_URL, QUEUE_NAME)
     async with connection:
-        body = json.dumps(message_dict).encode()
-        await channel.default_exchange.publish(aio_pika.Message(body=body), routing_key=QUEUE_NAME)
-        logger.info(f"Parcel with temp_id {temp_id} sent to the queue.")
+        async with channel:
+            body = json.dumps(message_dict).encode()
+            await channel.default_exchange.publish(aio_pika.Message(body=body), routing_key=QUEUE_NAME)
+            logger.info(f"Parcel with temp_id {temp_id} sent to the queue.")
     return temp_id
 
 
@@ -81,7 +82,7 @@ async def get_parcels_service(
     ]
 
 
-async def get_parcel_detail_service(db: AsyncSession, session_id: str, parcel_id: int) -> ParacelDetial | None:
+async def get_parcel_detail_service(db: AsyncSession, session_id: str, parcel_id: int) -> ParcelDetial | None:
     """
     Returns details of a specific parcel by ID for the current session or None if not found.
     """
@@ -96,7 +97,7 @@ async def get_parcel_detail_service(db: AsyncSession, session_id: str, parcel_id
     if parcel is None:
         return None
 
-    return ParacelDetial(
+    return ParcelDetial(
         id=parcel.id,
         name=parcel.name,
         weight=parcel.weight,

@@ -1,3 +1,5 @@
+import json
+
 import aiohttp
 import redis.asyncio as redis
 from loguru import logger
@@ -21,7 +23,8 @@ async def get_usd_to_rub_rate() -> float:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(CBR_URL) as response:
-                data = await response.json()
+                text_data = await response.text()
+                data = json.loads(text_data)
                 rate = data["Valute"]["USD"]["Value"]
                 await r.set(CACHE_KEY, rate, ex=CACHE_TTL)
                 logger.info(f"Fetched and cached USD to RUB rate: {rate}")

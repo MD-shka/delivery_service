@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class ParcelBase(BaseModel):
@@ -18,11 +18,11 @@ class ParcelCreate(ParcelBase):
 class ParcelInDB(ParcelBase):
     id: Annotated[int, Field(description="Parcel ID", ge=1)]
     delivery_cost_rub: Annotated[float | None, Field(gt=0, description="Delivery cost in RUB")]
-    session_id: Annotated[str, Field(default=None, description="Session ID", ge=1)]
+    session_id: Annotated[str, Field(default=None, description="Session ID")]
     created_at: Annotated[datetime, Field(description="Creation date")]
 
 
-class ParacelDetial(ParcelInDB):
+class ParcelDetial(ParcelInDB):
     _parcel_type: Annotated[object | None, Field(default=None, description="Type of the parcel")]
     type_name: Annotated[str | None, Field(default=None, description="Type name of the parcel")]
 
@@ -38,8 +38,10 @@ class ParacelDetial(ParcelInDB):
             values["type_name"] = None
         return values
 
-    class Config:
-        fields = {
-            "_parcel_type": {"exclude": True},
+    model_config = ConfigDict(
+        orm_mode=True,
+        fields={
             "type_id": {"exclude": True},
-        }
+            "_parcel_type": {"exclude": True},
+        },
+    )

@@ -16,18 +16,22 @@ QUEUE_NAME = rabbitmq_settings.QUEUE_NAME
 
 async def process_parcel(parcel_data: dict[str, float]):
     try:
+        logger.info(f"Processing parcel data: {parcel_data}")
         usd_to_rub_rate = await get_usd_to_rub_rate()
         delivery_cost = await calculate_delivery_cost(
-            weight=parcel_data["weight"], item_value_usd=parcel_data["item_value"], usd_to_rub_rate=usd_to_rub_rate
+            weight=parcel_data["weight"],
+            item_value_usd=parcel_data["content_value_usd"],
+            usd_to_rub_rate=usd_to_rub_rate,
         )
 
         async with get_session() as session:
             new_parcel = Parcel(
                 name=parcel_data["name"],
                 weight=parcel_data["weight"],
-                type_id=parcel_data["parcel_type_id"],
-                content_value_usd=parcel_data["item_value"],
+                type_id=parcel_data["type_id"],
+                content_value_usd=parcel_data["content_value_usd"],
                 delivery_cost_rub=delivery_cost,
+                session_id=parcel_data["session_id"],
             )
             session.add(new_parcel)
             await session.commit()

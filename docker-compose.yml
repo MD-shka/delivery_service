@@ -38,4 +38,19 @@ services:
     env_file:
       - "/home/mdshka_wsl/projects/delivery_service/.env"
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL_IN_DOCKER}
+      RABBITMQ_URL: ${RABBITMQ_URL_IN_DOCKER}
+
+  parcel_worker:
+    build:
+      context: .
+    command: ["/app/.venv/bin/python", "-m", "app.workers.parcel_worker"]
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - "/home/mdshka_wsl/projects/delivery_service/.env"
+    environment:
+      RABBITMQ_URL: ${RABBITMQ_URL_IN_DOCKER}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379

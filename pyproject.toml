@@ -23,6 +23,7 @@ dependencies = [
     "requests>=2.32.3",
     "sqlalchemy>=2.0.38",
     "sqlalchemy-utils>=0.41.2",
+    "supervisor>=4.2.5",
     "uvicorn>=0.34.0",
 ]
 
